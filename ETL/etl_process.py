@@ -3,10 +3,8 @@ Proceso ETL principal para cargar datos OULAD a MySQL.
 """
 
 import pandas as pd
-import numpy as np
 from pathlib import Path
-from datetime import datetime
-from .database import DatabaseConnection
+from SQL.database import DatabaseConnection
 from .data_cleaner import DataCleaner
 from tqdm import tqdm
 
@@ -105,6 +103,7 @@ class ETLProcess:
         print("  - Cargando courses...")
         df = pd.read_csv(self.data_path / "courses.csv")
         df = self.cleaner.clean_courses(df)
+        df = df.where(pd.notnull(df), None)
         
         data = [(row['code_module'], row['code_presentation'], row['module_presentation_length'])
                 for _, row in df.iterrows()]
@@ -117,6 +116,7 @@ class ETLProcess:
         print("  - Cargando assessments...")
         df = pd.read_csv(self.data_path / "assessments.csv")
         df = self.cleaner.clean_assessments(df)
+        df = df.where(pd.notnull(df), None)
         
         # Agregar campo ordinal
         df['assessment_type_ordinal'] = df['assessment_type'].map(
@@ -139,6 +139,7 @@ class ETLProcess:
         print("  - Cargando vle...")
         df = pd.read_csv(self.data_path / "vle.csv")
         df = self.cleaner.clean_vle(df)
+        df = df.where(pd.notnull(df), None)
         
         # Agregar campo ordinal
         df['activity_type_ordinal'] = df['activity_type'].map(
@@ -161,6 +162,7 @@ class ETLProcess:
         print("  - Cargando student_info...")
         df = pd.read_csv(self.data_path / "studentInfo.csv")
         df = self.cleaner.clean_student_info(df)
+        df = df.where(pd.notnull(df), None)
         
         # Agregar campos ordinales
         for field in ['gender', 'region', 'highest_education', 'imd_band', 
@@ -210,6 +212,7 @@ class ETLProcess:
         print("  - Cargando student_registration...")
         df = pd.read_csv(self.data_path / "studentRegistration.csv")
         df = self.cleaner.clean_student_registration(df)
+        df = df.where(pd.notnull(df), None)
         
         data = []
         for _, row in df.iterrows():
@@ -230,6 +233,7 @@ class ETLProcess:
         print("  - Cargando student_assessment...")
         df = pd.read_csv(self.data_path / "studentAssessment.csv")
         df = self.cleaner.clean_student_assessment(df)
+        df = df.where(pd.notnull(df), None)
         
         data = []
         for _, row in df.iterrows():
@@ -255,6 +259,7 @@ class ETLProcess:
         print("  - Cargando student_vle...")
         df = pd.read_csv(self.data_path / "studentVle.csv")
         df = self.cleaner.clean_student_vle(df)
+        df = df.where(pd.notnull(df), None)
         
         data = []
         for _, row in df.iterrows():
