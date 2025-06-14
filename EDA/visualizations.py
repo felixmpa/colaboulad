@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
+from scipy.stats import f_oneway
 
 class Visualizations:
     @staticmethod
@@ -126,3 +127,22 @@ class Visualizations:
         plt.xlabel('Score')
         plt.title('Distribution of Assessment Scores')
         plt.show()
+
+    @staticmethod
+    def run_anova(df, numeric_column, group_column):
+        """
+        Ejecuta un ANOVA unidireccional para comparar medias entre grupos.
+        """
+        groups = df[group_column].dropna().unique()
+        samples = [df[df[group_column] == g][numeric_column].dropna() for g in groups]
+
+        f_stat, p_val = f_oneway(*samples)
+
+        print(f"\n--- ANOVA: {numeric_column} by {group_column} ---")
+        print(f"F-statistic: {f_stat:.4f}")
+        print(f"P-value: {'< 0.001' if p_val < 0.001 else f'{p_val:.4f}'}")
+
+        if p_val < 0.05:
+            print("Diferencias significativas entre al menos un par de grupos.")
+        else:
+            print("No hay diferencias significativas.")

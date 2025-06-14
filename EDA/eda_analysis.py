@@ -60,6 +60,12 @@ class EDAAnalysis:
             Visualizations.plot_assessment_type_distribution(assessments)
             Visualizations.plot_assessment_score_distribution(student_assessment)
 
+            # ANOVA: ¿hay diferencias en créditos estudiados entre bandas de edad?
+            Visualizations.run_anova(student_info, 'studied_credits', 'age_band')
+
+            # ANOVA: ¿hay diferencias en créditos estudiados según el resultado final?
+            Visualizations.run_anova(student_info, 'studied_credits', 'final_result')
+
         except Exception as e:
             print(f"Error en análisis EDA: {e}")
         finally:
