@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS activity_type_domain (
 CREATE TABLE IF NOT EXISTS courses (
     code_module VARCHAR(10),
     code_presentation VARCHAR(10),
-    length INT,
+    module_presentation_length INT,
     PRIMARY KEY (code_module, code_presentation)
 );
 
