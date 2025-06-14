@@ -39,6 +39,39 @@ class EDAAnalysis:
             assessments = dataframes["assessments"]
             student_assessment = dataframes["student_assessment"]
 
+            # Estadísticas descriptiva y correlación
+
+            for name, df in dataframes.items():
+                print(f"\n=== Análisis Exploratorio: {name.upper()} ===")
+
+                # Variables numéricas
+                numeric_df = df.select_dtypes(include="number")
+                if not numeric_df.empty:
+                    print("\nEstadísticas numéricas:")
+                    print(numeric_df.describe().round(2))
+
+                    print("\nMatriz de correlación:")
+                    print(numeric_df.corr().round(2))
+
+                    Visualizations.print_strong_correlations(numeric_df)
+
+                    # Descomenta si deseas ver el heatmap visual
+                    # Visualizations.plot_correlation_heatmap(numeric_df, title=f"Matriz de Correlación: {name}")
+
+                # Variables categóricas
+                cat_cols = df.select_dtypes(include="object").columns
+                if not cat_cols.empty:
+                    print("\nEstadísticas categóricas:")
+                    for col in cat_cols:
+                        print(f"\n{col} (top 5):")
+                        print(df[col].value_counts().head(5))
+
+            if not cat_cols.empty:
+                print("\nEstadísticas categóricas:")
+                for col in cat_cols:
+                    print(f"\n{col} (top 5):")
+                    print(df[col].value_counts().head(5))
+
             # --- Visualizaciones ---
             confusion_matrix = pd.crosstab(student_info['gender'], student_info['final_result'])
             Visualizations.plot_confusion_matrix(confusion_matrix)

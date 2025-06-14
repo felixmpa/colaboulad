@@ -146,3 +146,27 @@ class Visualizations:
             print("Diferencias significativas entre al menos un par de grupos.")
         else:
             print("No hay diferencias significativas.")
+
+
+    @staticmethod
+    def plot_correlation_heatmap(df, title="Correlation Matrix"):
+        corr = df.select_dtypes(include="number").corr()
+        if corr.shape[0] > 1:
+            plt.figure(figsize=(10, 8))
+            sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm", center=0)
+            plt.title(title)
+            plt.show()
+
+    @staticmethod
+    def print_strong_correlations(df, threshold=0.3):
+        corr_matrix = df.select_dtypes(include="number").corr()
+        print("\nCorrelaciones fuertes (> ±{:.1f}):".format(threshold))
+        corr_pairs = corr_matrix.unstack().sort_values(key=lambda x: -abs(x))
+
+        seen = set()
+        for (var1, var2), corr in corr_pairs.items():
+            if var1 != var2 and (var2, var1) not in seen and abs(corr) >= threshold:
+                print(f"{var1} ↔ {var2} = {corr:.2f}")
+                seen.add((var1, var2))
+
+
