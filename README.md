@@ -42,14 +42,19 @@ DB_DATABASE=oulad
 Activar el entorno virtual (macOS/Linux):
 ```bash
 python3 -m venv venv
+```
+```bash 
 source venv/bin/activate
 ```
 
 Windows:
 ```bash
 python -m venv venv
+```
+```bash
 venv\Scripts\activate
 ```
+
 
 Instalar dependencias:
 ```bash
@@ -82,7 +87,7 @@ Ejecutar el programa principal:
 python main.py
 ```
 
-### Opciones del Menú
+## Opciones del Menú (Uso del Sistema)
 
 1. **Ejecutar ETL**: Carga completa de datos en MySQL
    - Crea el schema y tablas
@@ -92,6 +97,29 @@ python main.py
 2. **Ejecutar EDA**: Análisis exploratorio (próximamente)
 
 3. **Verificar datasets**: Verifica integridad de archivos
+
+## Para visualizar el Notebook 
+
+Vamos a la carpeta EDA y ejecutamos los siguientes comandos:
+```Nota: si abres una nueva terminal, no olvides activar tu entorno (venv).```
+
+```bash
+source venv/bin/activate
+```
+```bash
+pip install notebook jupyterlab ipywidgets
+```
+
+Abrir notebook:
+```bash
+python -m ipykernel install --user --name=venv_oulad --display-name "Python (venv OULAD)"
+```
+```bash
+jupyter notebook EDA/EDA_NOTEBOOK.ipynb
+```
+
+Esto debe abrir en su navegador la siguiente ruta: http://localhost:8889/notebooks/EDA_NOTEBOOK.ipynb
+En la barra de menu, debes ir donde dice [Kernel] y seleccionar tu  "Python (venv OULAD)".
 
 ## Estructura del Proyecto
 
@@ -179,9 +207,3 @@ colaboulad/
 - Se procesa en lotes automáticamente
 - Considerar aumentar memoria de MySQL si es necesario
 
-## Próximas Mejoras
-
-- [ ] Implementar EDA (Análisis Exploratorio)
-- [ ] Agregar soporte para PostgreSQL
-- [ ] Dashboard de visualización
-- [ ] Optimización de consultas analíticas

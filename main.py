@@ -44,10 +44,12 @@ def run_etl():
     else:
         print("ETL cancelado.")
 
+from EDA.eda_analysis import EDAAnalysis
+
 def run_eda():
-    """Ejecuta el análisis exploratorio de datos."""
-    print("\n⚠️  EDA aún no implementado.")
-    print("Esta funcionalidad estará disponible próximamente.")
+    print("\nEjecutando Análisis Exploratorio de Datos (EDA)...")
+    eda = EDAAnalysis()
+    eda.run()
 
 def main():
     """Menú principal del sistema."""
