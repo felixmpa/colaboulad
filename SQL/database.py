@@ -55,16 +55,29 @@ class DatabaseConnection:
             print(f"✗ Error ejecutando script: {e}")
             return False
 
-    def execute_query(self, query, params=None):
-        """Ejecuta una consulta SQL (INSERT/UPDATE/DELETE)."""
+    def execute_many(self, query, values_list):
+        """
+        Ejecuta múltiples inserciones usando SQLAlchemy.
+        Requiere que el query use placeholders con nombre (:key)
+        y que values_list sea una lista de diccionarios.
+        """
         try:
             with self.engine.begin() as conn:
-                conn.execute(text(query), params or {})
+                conn.execute(text(query), values_list)
             return True
         except Exception as e:
-            print(f"✗ Error en query: {e}")
+            print(f"✗ Error en execute_many: {e}")
             return False
 
+    def execute_many(self, query, values_list):
+        """Ejecuta múltiples inserciones."""
+        try:
+            with self.engine.begin() as conn:
+                conn.execute(text(query), values_list)
+            return True
+        except Exception as e:
+            print(f"✗ Error en execute_many: {e}")
+            return False
     def fetch_one(self, query, params=None):
         """Ejecuta una consulta SELECT y retorna un resultado."""
         try:

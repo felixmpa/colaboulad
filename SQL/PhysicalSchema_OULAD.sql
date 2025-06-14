@@ -174,8 +174,6 @@ CREATE TABLE IF NOT EXISTS student_vle (
         ON DELETE CASCADE
 );
 
--- ---------- 4. INDEXES FOR PERFORMANCE ----------
-CREATE INDEX idx_assessment_module ON assessments(code_module, code_presentation);
 CREATE INDEX idx_vle_module ON vle(code_module, code_presentation);
 CREATE INDEX idx_student_result ON student_info(final_result);
 CREATE INDEX idx_registration_dates ON student_registration(date_registration, date_unregistration);
