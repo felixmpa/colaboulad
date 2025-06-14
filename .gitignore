@@ -12,3 +12,7 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.aider*
+Datasets/*.csv
+Datasets/*.zip
+

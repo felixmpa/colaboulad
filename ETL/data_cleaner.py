@@ -14,10 +14,10 @@ class DataCleaner:
         df = df.drop_duplicates()
         
         # Validar que length sea positivo
-        df = df[df['length'] > 0]
+        df = df[df['module_presentation_length'] > 0]
         
         # Asegurar tipos de datos
-        df['length'] = df['length'].astype(int)
+        df['module_presentation_length'] = df['module_presentation_length'].astype(int)
         
         return df
     

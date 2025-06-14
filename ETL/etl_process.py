@@ -106,7 +106,8 @@ class ETLProcess:
         df = pd.read_csv(self.data_path / "courses.csv")
         df = self.cleaner.clean_courses(df)
         
-        data = df.to_records(index=False).tolist()
+        data = [(row['code_module'], row['code_presentation'], row['length']) 
+                for _, row in df.iterrows()]
         query = "INSERT IGNORE INTO courses (code_module, code_presentation, length) VALUES (%s, %s, %s)"
         self.db.execute_many(query, data)
         print(f"    ✓ {len(data)} registros")
