@@ -121,6 +121,16 @@ jupyter notebook EDA/EDA_NOTEBOOK.ipynb
 Esto debe abrir en su navegador la siguiente ruta: http://localhost:8889/notebooks/EDA_NOTEBOOK.ipynb
 En la barra de menu, debes ir donde dice [Kernel] y seleccionar tu  "Python (venv OULAD)".
 
+## Modelado Predictivo
+
+Para experimentar con modelos de clasificacion y regresion sobre `OULAD_Experiment_cleaned.csv` existe la carpeta `MODELING`.
+Ejecuta:
+```bash
+python MODELING/model_training.py --data Datasets/OULAD_Experiment_cleaned.csv
+```
+El script imprime un `describe` del dataset y entrena modelos simples de ejemplo.
+
+
 ## Estructura del Proyecto
 
 ```
