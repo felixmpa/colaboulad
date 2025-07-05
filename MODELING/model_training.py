@@ -1,11 +1,12 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.metrics import accuracy_score, mean_squared_error
+import numpy as np
 import argparse
 
 
@@ -46,6 +47,19 @@ def prepare_features(df: pd.DataFrame, target_col: str) -> tuple:
     return X, y, preprocessor
 
 
+def print_top_features(pipeline: Pipeline, n: int = 5) -> None:
+    """Display the top features by absolute coefficient weight."""
+    model = pipeline.named_steps["model"]
+    if not hasattr(model, "coef_"):
+        return
+    feature_names = pipeline.named_steps["preprocess"].get_feature_names_out()
+    coefs = model.coef_[0] if model.coef_.ndim > 1 else model.coef_
+    top_idx = np.argsort(np.abs(coefs))[::-1][:n]
+    print("\nTop features:")
+    for idx in top_idx:
+        print(f"  {feature_names[idx]}: {coefs[idx]:.3f}")
+
+
 def run_classification(df: pd.DataFrame) -> None:
     """Example binary classification using logistic regression."""
     target_col = "final_result"
@@ -67,6 +81,9 @@ def run_classification(df: pd.DataFrame) -> None:
     preds = clf.predict(X_test)
     acc = accuracy_score(y_test, preds)
     print(f"\nClassification accuracy: {acc:.3f}")
+    scores = cross_val_score(clf, X, y, cv=5, scoring="accuracy")
+    print(f"Cross-val accuracy: {scores.mean():.3f} ± {scores.std():.3f}")
+    print_top_features(clf)
 
 
 def run_regression(df: pd.DataFrame) -> None:
@@ -86,6 +103,9 @@ def run_regression(df: pd.DataFrame) -> None:
     preds = reg.predict(X_test)
     rmse = mean_squared_error(y_test, preds) ** 0.5
     print(f"\nRegression RMSE for {target_col}: {rmse:.2f}")
+    scores = cross_val_score(reg, X, y, cv=5, scoring="neg_root_mean_squared_error")
+    print(f"Cross-val RMSE: {-scores.mean():.2f} ± {scores.std():.2f}")
+    print_top_features(reg)
 
 
 def main() -> None:

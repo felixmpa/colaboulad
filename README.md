@@ -129,6 +129,8 @@ Ejecuta:
 python MODELING/model_training.py --data Datasets/OULAD_Experiment_cleaned.csv
 ```
 El script imprime un `describe` del dataset y entrena modelos simples de ejemplo.
+También muestra validación cruzada y las características con mayor influencia
+según los coeficientes de los modelos.
 
 
 ## Estructura del Proyecto
