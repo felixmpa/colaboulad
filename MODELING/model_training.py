@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.metrics import accuracy_score, mean_squared_error
 import argparse
@@ -28,9 +29,19 @@ def prepare_features(df: pd.DataFrame, target_col: str) -> tuple:
     numeric_cols = X.select_dtypes(include="number").columns
     categorical_cols = X.select_dtypes(include="object").columns
 
+    numeric_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="median"))
+    ])
+
+    categorical_transformer = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("encoder", OneHotEncoder(handle_unknown="ignore"))
+    ])
+
     preprocessor = ColumnTransformer([
-        ("categorical", OneHotEncoder(handle_unknown="ignore"), categorical_cols)
-    ], remainder="passthrough")
+        ("num", numeric_transformer, numeric_cols),
+        ("cat", categorical_transformer, categorical_cols)
+    ])
 
     return X, y, preprocessor
 
@@ -73,7 +84,7 @@ def run_regression(df: pd.DataFrame) -> None:
     ])
     reg.fit(X_train, y_train)
     preds = reg.predict(X_test)
-    rmse = mean_squared_error(y_test, preds, squared=False)
+    rmse = mean_squared_error(y_test, preds) ** 0.5
     print(f"\nRegression RMSE for {target_col}: {rmse:.2f}")
 
 

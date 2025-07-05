@@ -58,7 +58,7 @@ venv\Scripts\activate
 
 Instalar dependencias:
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ### Paso 3 - Configurar Base de Datos
